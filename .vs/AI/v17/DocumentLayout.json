@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "C:\\Users\\Lenovo\\source\\repos\\AI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|c:\\users\\lenovo\\source\\repos\\ai\\ai\\algorithms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|solutionrelative:ai\\algorithms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|c:\\users\\lenovo\\source\\repos\\ai\\ai\\tree.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|solutionrelative:ai\\tree.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|c:\\users\\lenovo\\source\\repos\\ai\\ai\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AIPro.csproj|solutionrelative:ai\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AI.csproj|c:\\users\\lenovo\\source\\repos\\ai\\ai\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AI.csproj|C:\\Users\\Lenovo\\source\\repos\\AI\\ai\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{57D89CB8-9ED5-46AA-B0E0-C0A4281C41E6}|AI\\AI.csproj|solutionrelative:ai\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -35,27 +43,52 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Algorithms.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Algorithms.cs",
+              "RelativeDocumentMoniker": "AI\\Algorithms.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Algorithms.cs",
+              "RelativeToolTip": "AI\\Algorithms.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T06:45:24.454Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Tree.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Tree.cs",
+              "RelativeDocumentMoniker": "AI\\Tree.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Tree.cs",
+              "RelativeToolTip": "AI\\Tree.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T06:16:24.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Form1.cs",
               "RelativeDocumentMoniker": "AI\\Form1.cs",
               "ToolTip": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Form1.cs",
               "RelativeToolTip": "AI\\Form1.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAAAB0AAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAAFAAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-19T09:32:13.968Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Form1.cs",
               "RelativeDocumentMoniker": "AI\\Form1.cs",
               "ToolTip": "C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\Form1.cs [Design]",
               "RelativeToolTip": "AI\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T09:29:43.034Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-05-19T09:29:43.034Z"
             }
           ]
         }
