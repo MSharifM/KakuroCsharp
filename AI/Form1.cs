@@ -15,6 +15,7 @@ namespace AI
     public partial class Form1 : Form
     {
         public Box Box { get; set; }
+
         public Form1()
         {
             InitializeComponent();
@@ -22,12 +23,7 @@ namespace AI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string pathFile = "";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                pathFile = openFileDialog1.FileName;
-                ReadInputFile(pathFile);
-            }
+            
         }
 
         public void ReadInputFile(string pathFile)
@@ -59,6 +55,16 @@ namespace AI
                 }
             }
         }
+
+        private void btnInputFile_Click(object sender, EventArgs e)
+        {
+            string pathFile = "";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                pathFile = openFileDialog1.FileName;
+                ReadInputFile(pathFile);
+            }
+        }
     }
 
     public class Box
@@ -75,7 +81,47 @@ namespace AI
         }
         public object[,] data;
 
+        #region IsValid
 
+        public bool IsValidRowAndColumn(int row , int col)
+        {
+            if (IsValidRow(this, row, col) && IsValidColumn(this, row, col))
+                return true;
+
+            return false;
+        }
+
+        private bool IsValidRow (Box box , int row , int col)
+        {
+            int target = (box.data[row, col] as Node).Up;
+
+            int sum = 0;
+            for (int i = col + 1; i < box.Column && int.Parse(box.data[row, i].ToString()) != -1 ; i++)
+            {
+                sum += int.Parse(box.data[row, i].ToString());
+            }
+            if (sum == target)
+                return true;
+
+            return false;
+        }
+
+        private bool IsValidColumn (Box box , int row , int col)
+        {
+            int target = (box.data[row, col] as Node).Down;
+
+            int sum = 0;
+            for (int i = row + 1; i < box.Row && int.Parse(box.data[i, col].ToString()) != -1 ; i++)
+            {
+                sum += int.Parse(box.data[i, col].ToString());
+            }
+            if (sum == target)
+                return true;
+
+            return false;
+        }
+
+        #endregion
     }
 
     class Node

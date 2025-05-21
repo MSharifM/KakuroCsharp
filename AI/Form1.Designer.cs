@@ -29,17 +29,33 @@
         private void InitializeComponent()
         {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnInputFile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // btnInputFile
+            // 
+            this.btnInputFile.Font = new System.Drawing.Font("Nazanin", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnInputFile.Location = new System.Drawing.Point(192, 18);
+            this.btnInputFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnInputFile.Name = "btnInputFile";
+            this.btnInputFile.Size = new System.Drawing.Size(100, 35);
+            this.btnInputFile.TabIndex = 0;
+            this.btnInputFile.Text = "انتخاب فایل";
+            this.btnInputFile.UseVisualStyleBackColor = true;
+            this.btnInputFile.Click += new System.EventHandler(this.btnInputFile_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 306);
+            this.ClientSize = new System.Drawing.Size(532, 471);
+            this.Controls.Add(this.btnInputFile);
+            this.Font = new System.Drawing.Font("Nazanin", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -50,6 +66,7 @@
         #endregion
 
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button btnInputFile;
     }
 }
 
