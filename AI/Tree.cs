@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,18 +11,24 @@ namespace AI
     {
         public Tree(Box box)
         {
-            Root.Parent = null;
+            Root = new TreeNode();
             Root.Data = box;
         }
 
         public TreeNode Root { get; set; }
 
-        public void Insert(TreeNode parent , Box data)
+        public TreeNode Insert(TreeNode parent , Box oldBox , int row , int col)
         {
+            Box newBox = oldBox;
             TreeNode node = new TreeNode();
-            node.Data = data;
             node.Parent = parent;
-            parent.Children.Add(node);
+            for (int i = 1; i < 10; i++)
+            {
+                newBox.Data[row, col] = i;
+                node.Data = newBox;
+                parent.Children.Add(node);
+            }
+            return node;
         }
     }
 

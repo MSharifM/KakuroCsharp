@@ -39,7 +39,7 @@
             // btnInputFile
             // 
             this.btnInputFile.Font = new System.Drawing.Font("Nazanin", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnInputFile.Location = new System.Drawing.Point(192, 18);
+            this.btnInputFile.Location = new System.Drawing.Point(218, 14);
             this.btnInputFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnInputFile.Name = "btnInputFile";
             this.btnInputFile.Size = new System.Drawing.Size(100, 35);

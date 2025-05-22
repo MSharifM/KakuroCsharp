@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 
 namespace AI
@@ -23,12 +24,11 @@ namespace AI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         public void ReadInputFile(string pathFile)
         {
-
             using (StreamReader stream = new StreamReader(pathFile))
             {
                 int[] dimensions = stream.ReadLine().Split(' ').Select(int.Parse).ToArray();
@@ -39,21 +39,23 @@ namespace AI
                 for (int i = 0; i < blackBoxsSize; i++)
                 {
                     int[] dimensionsBlack = stream.ReadLine().Split(' ').Select(int.Parse).Select(n => n - 1).ToArray();
-                    Box.data[dimensionsBlack[0], dimensionsBlack[1]] = -1;
+                    Box.Data[dimensionsBlack[0], dimensionsBlack[1]] = -1;
                 }
 
                 int detailBoxsSize = int.Parse(stream.ReadLine());
                 for (int i = 0; i < detailBoxsSize; i++)
                 {
-                    int[] dimensionsDetail = stream.ReadLine().Split(' ').Select(int.Parse).Select(n => n - 1).ToArray();
+                    int[] dimensionsDetail = stream.ReadLine().Split(' ').Select(int.Parse).ToArray();
                     Node node = new Node()
                     {
                         Down = dimensionsDetail[2],
                         Up = dimensionsDetail[3]
                     };
-                    Box.data[dimensionsDetail[0], dimensionsDetail[1]] = node;
+                    Box.Data[dimensionsDetail[0] - 1, dimensionsDetail[1] - 1] = node;
                 }
             }
+
+            Algorithms.BackTracking(Box);
         }
 
         private void btnInputFile_Click(object sender, EventArgs e)
@@ -64,7 +66,11 @@ namespace AI
                 pathFile = openFileDialog1.FileName;
                 ReadInputFile(pathFile);
             }
+
+            
         }
+
+        
     }
 
     public class Box
@@ -77,13 +83,13 @@ namespace AI
         {
             Row = row;
             Column = column;
-            data = new object[row, column];
+            Data = new object[row, column];
         }
-        public object[,] data;
+        public object[,] Data;
 
         #region IsValid
 
-        public bool IsValidRowAndColumn(int row , int col)
+        public bool IsValidRowAndColumn(int row, int col)
         {
             if (IsValidRow(this, row, col) && IsValidColumn(this, row, col))
                 return true;
@@ -91,14 +97,28 @@ namespace AI
             return false;
         }
 
-        private bool IsValidRow (Box box , int row , int col)
+        private bool IsValidRow(Box box, int row, int col)
         {
-            int target = (box.data[row, col] as Node).Up;
+            int target = 0;
+            for (int i = col; ; i--)
+            {
+                if (box.Data[row, i] is Node)
+                {
+                    target = (box.Data[row, i] as Node).Up;
+                    break;
+                }
+            }
 
             int sum = 0;
-            for (int i = col + 1; i < box.Column && int.Parse(box.data[row, i].ToString()) != -1 ; i++)
+            for (int i = col + 1; i < box.Column; i++)
             {
-                sum += int.Parse(box.data[row, i].ToString());
+                if (box.Data[row, i] is null)
+                    return true;
+
+                if (box.Data[row, i] is Node || int.Parse(box.Data[row, i].ToString()) == -1)
+                    break;
+
+                sum += int.Parse(box.Data[row, i].ToString());
             }
             if (sum == target)
                 return true;
@@ -106,14 +126,28 @@ namespace AI
             return false;
         }
 
-        private bool IsValidColumn (Box box , int row , int col)
+        private bool IsValidColumn(Box box, int row, int col)
         {
-            int target = (box.data[row, col] as Node).Down;
+            int target = 0;
+            for (int i = row; ; i--)
+            {
+                if (box.Data[i, col] is Node)
+                {
+                    target = (box.Data[i, col] as Node).Down;
+                    break;
+                }
+            }
 
             int sum = 0;
-            for (int i = row + 1; i < box.Row && int.Parse(box.data[i, col].ToString()) != -1 ; i++)
+            for (int i = row + 1; i < box.Row; i++)
             {
-                sum += int.Parse(box.data[i, col].ToString());
+                if (box.Data[i, col] is null)
+                    return true;
+
+                if (box.Data[i, col] is Node || int.Parse(box.Data[i, col].ToString()) == -1)
+                    break;
+
+                sum += int.Parse(box.Data[i, col].ToString());
             }
             if (sum == target)
                 return true;
