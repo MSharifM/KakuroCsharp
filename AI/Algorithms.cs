@@ -10,7 +10,7 @@ namespace AI
 {
     public class Algorithms
     {
-        public static void BackTracking(Box oldBox)
+        public static void BackTracking(Box oldBox, TreeNode parent = null)
         {
             #region false
             //var emptyPoints = new List<Emptypoints>();
@@ -43,9 +43,11 @@ namespace AI
 
             //return false;
             #endregion  
-            var newBox = oldBox;
+            Box newBox = new Box(oldBox.Row, oldBox.Column);
+            newBox.Data = (object[,])oldBox.Data.Clone();
             Tree tree = new Tree(newBox);
-            TreeNode parent = tree.Root;
+            if (parent == null)
+                parent = tree.Root;
 
             for (int i = 0; i < newBox.Row; i++)
             {
@@ -53,12 +55,12 @@ namespace AI
                 {
                     if (newBox.Data[i, j] is null)
                     {
-                        parent = tree.Insert(parent, newBox, i, j); // Update parent tree node
-                        if (newBox.IsValidRowAndColumn(i, j))
-                            BackTracking(newBox);
+                        parent = tree.Insert(parent, newBox, i, j).Children[0]; // Update parent tree node
+                        if (parent.Data.IsValidRowAndColumn(i, j))
+                            BackTracking(parent.Data, parent);
                         else
                         {
-                            
+                            Back(parent); // Backtrack on first child
                         }
 
                     }
@@ -66,7 +68,7 @@ namespace AI
             }
         }
 
-        public void Back(TreeNode parent)
+        public static void Back(TreeNode parent)
         {
             parent = parent.Parent;
             parent.Children.RemoveAt(0); // Remove the first child because failed
@@ -75,7 +77,7 @@ namespace AI
                 Back(parent);
             }
 
-            BackTracking(parent.Children[0].Data); // backtrack on first child
+            BackTracking(parent.Children[0].Data, parent); // backtrack on first child
         }
     }
 

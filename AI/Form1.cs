@@ -28,6 +28,8 @@ namespace AI
 
         }
 
+        #region Read & Write output file functions
+
         public void ReadInputFile(string pathFile)
         {
             using (StreamReader stream = new StreamReader(pathFile))
@@ -55,15 +57,11 @@ namespace AI
                     Box.Data[dimensionsDetail[0] - 1, dimensionsDetail[1] - 1] = node;
                 }
             }
-
-            Algorithms.BackTracking(Box);
         }
 
         public void OutputFile(string path , Box box , bool solve = false)
         {
             path += ".html";
-
-            #region Output
 
             using (StreamWriter stream = new StreamWriter(path))
             {
@@ -73,19 +71,19 @@ namespace AI
                     stream.WriteLine("<tr>");
                     for (int j = 0; j < box.Column; j++)
                     {
-                        if (box.data[i, j] is int number)
+                        if (box.Data[i, j] is int number)
                         {
                             if (number == -1)
                                 stream.WriteLine("<td class=\"black\"></td>");
                             else
                                 stream.WriteLine($"<td class=\"white\">{number}</td>");
                         }
-                        else if (box.data[i, j] is Node)
+                        else if (box.Data[i, j] is Node)
                         {
-                            Node node = box.data[i, j] as Node;
-                            if (node.Up == -1)
+                            Node node = box.Data[i, j] as Node;
+                            if (node.Up == 0)
                                 stream.WriteLine($"<td class=\"clue black\"><div class=\"clue-bottom\">{node.Down}</div></td>");
-                            else if (node.Down == -1)
+                            else if (node.Down == 0)
                                 stream.WriteLine($"<td class=\"clue black\"><div class=\"clue-top\">{node.Up}</div></td>");
                             else
                                 stream.WriteLine($"<td class=\"clue black\"><div class=\"clue-top\">{node.Up}</div><div class=\"clue-bottom\">{node.Down}</div></td>");
@@ -104,8 +102,9 @@ namespace AI
             else
                 webBSolve.Url = new Uri("C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\bin\\Debug\\" + path);
             
-            #endregion
         }
+
+        #endregion 
 
         private void btnInputFile_Click(object sender, EventArgs e)
         {
@@ -117,7 +116,10 @@ namespace AI
                 OutputFile("question" , Box);
             }
 
-            
+
+            Algorithms.BackTracking(Box);
+
+            OutputFile("solve", Box, true);
         }
 
     }
@@ -148,18 +150,26 @@ namespace AI
 
         private bool IsValidRow(Box box, int row, int col)
         {
+            var num = box.Data[row, col]; // to check unique 
+
             int target = 0;
+            bool flag = false;
             for (int i = col; ; i--)
             {
+                if (box.Data[row, i] is int number && flag)
+                    if(number.ToString() == num.ToString())
+                        return false;
+
                 if (box.Data[row, i] is Node)
                 {
                     target = (box.Data[row, i] as Node).Up;
                     break;
                 }
+                flag = true;
             }
 
             int sum = 0;
-            for (int i = col + 1; i < box.Column; i++)
+            for (int i = col; i < box.Column; i++)
             {
                 if (box.Data[row, i] is null)
                     return true;
@@ -177,18 +187,26 @@ namespace AI
 
         private bool IsValidColumn(Box box, int row, int col)
         {
+            var num = box.Data[row, col]; // to check unique 
+
             int target = 0;
+            bool flag = false;
             for (int i = row; ; i--)
             {
+                if (box.Data[i, col] is int number && flag)
+                    if (number.ToString() == num.ToString())
+                        return false;
+
                 if (box.Data[i, col] is Node)
                 {
                     target = (box.Data[i, col] as Node).Down;
                     break;
                 }
+                flag = true;
             }
 
             int sum = 0;
-            for (int i = row + 1; i < box.Row; i++)
+            for (int i = row; i < box.Row; i++)
             {
                 if (box.Data[i, col] is null)
                     return true;
