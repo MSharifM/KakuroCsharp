@@ -59,13 +59,13 @@ namespace AI
             }
         }
 
-        public void OutputFile(string path , Box box , bool solve = false)
+        public void OutputFile(string path, Box box, bool solve = false)
         {
             path += ".html";
 
             using (StreamWriter stream = new StreamWriter(path))
             {
-                stream.WriteLine("<!DOCTYPE html>\r\n<html lang=\"fa\">\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <title>جدول کاکورو دقیق</title>\r\n  <style>\r\n    table.kakuro {\r\n      border-collapse: collapse;\r\n      direction: ltr;\r\n    }\r\n    table.kakuro td {\r\n      width: 40px;\r\n      height: 40px;\r\n      border: 1px solid #222;\r\n      text-align: center;\r\n      vertical-align: middle;\r\n      position: relative;\r\n      font-family: Tahoma, Arial, sans-serif;\r\n      font-size: 16px;\r\n      padding: 0;\r\n      box-sizing: border-box;\r\n    }\r\n    .black {\r\n      background: #222;\r\n    }\r\n    .white {\r\n      background: #fff;\r\n    }\r\n    .clue {\r\n      background: #222;\r\n      color: #fff;\r\n      overflow: hidden;\r\n      position: relative;\r\n    }\r\n    .clue svg {\r\n      position: absolute;\r\n      top: 0; left: 0;\r\n      width: 100%; height: 100%;\r\n      pointer-events: none;\r\n    }\r\n    /* عدد بالا راست */\r\n    .clue .clue-top {\r\n      position: absolute;\r\n      top: 2px; right: 4px;\r\n      font-size: 14px;\r\n      z-index: 2;\r\n    }\r\n    /* عدد پایین چپ */\r\n    .clue .clue-bottom {\r\n      position: absolute;\r\n      bottom: 2px; left: 4px;\r\n      font-size: 14px;\r\n      z-index: 2;\r\n    }\r\n  </style>\r\n</head>\r\n<body>\r\n  <table class=\"kakuro\">");
+                stream.WriteLine("<!DOCTYPE html>\r\n<html lang=\"fa\">\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <title>جدول کاکورو</title>\r\n  <style>\r\n    table.kakuro {\r\n      border-collapse: collapse;\r\n      direction: ltr;\r\n    }\r\n    table.kakuro td {\r\n      width: 40px;\r\n      height: 40px;\r\n      border: 1px solid #222;\r\n      text-align: center;\r\n      vertical-align: middle;\r\n      position: relative;\r\n      font-family: Tahoma, Arial, sans-serif;\r\n      font-size: 16px;\r\n      padding: 0;\r\n      box-sizing: border-box;\r\n    }\r\n    .black {\r\n      background: #222;\r\n    }\r\n    .white {\r\n       border-color: red;\r\n     background: #fff;\r\n    }\r\n    .clue {\r\n      background: #222;\r\n      color: #fff;\r\n      overflow: hidden;\r\n      position: relative;\r\n    }\r\n    .clue svg {\r\n      position: absolute;\r\n      top: 0; left: 0;\r\n      width: 100%; height: 100%;\r\n      pointer-events: none;\r\n    }\r\n    /* عدد بالا راست */\r\n    .clue .clue-top {\r\n      position: absolute;\r\n      top: 2px; right: 4px;\r\n      font-size: 14px;\r\n      z-index: 2;\r\n    }\r\n    /* عدد پایین چپ */\r\n    .clue .clue-bottom {\r\n      position: absolute;\r\n      bottom: 2px; left: 4px;\r\n      font-size: 14px;\r\n      z-index: 2;\r\n    }\r\n  </style>\r\n</head>\r\n<body>\r\n  <table class=\"kakuro\">");
                 for (int i = 0; i < box.Row; i++)
                 {
                     stream.WriteLine("<tr>");
@@ -97,31 +97,39 @@ namespace AI
                 }
             }
 
-            if(!solve) 
+            if (!solve)
                 webBQuestion.Url = new Uri("C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\bin\\Debug\\" + path);
             else
                 webBSolve.Url = new Uri("C:\\Users\\Lenovo\\source\\repos\\AI\\AI\\bin\\Debug\\" + path);
-            
+
         }
 
         #endregion 
 
-        private void btnInputFile_Click(object sender, EventArgs e)
+        private void OpenFile()
         {
             string pathFile = "";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 pathFile = openFileDialog1.FileName;
                 ReadInputFile(pathFile);
-                OutputFile("question" , Box);
+                OutputFile("question", Box);
             }
+        }
 
-
-            Algorithms.BackTracking(Box);
-
+        private void btnBackTrack_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+            Box = Algorithms.BackTracking(Box);
             OutputFile("solve", Box, true);
         }
 
+        private void btnMinConflict_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+            Algorithms.MinConflict(Box);
+            OutputFile("solve", Box, true);
+        }
     }
 
     public class Box
@@ -154,10 +162,11 @@ namespace AI
 
             int target = 0;
             bool flag = false;
+            var nodeCol = 0;
             for (int i = col; ; i--)
             {
                 if (box.Data[row, i] is int number && flag)
-                    if(number.ToString() == num.ToString())
+                    if (number.ToString() == num.ToString())
                         return false;
 
                 if (box.Data[row, i] is Node)
@@ -166,7 +175,9 @@ namespace AI
                     break;
                 }
                 flag = true;
+                nodeCol = i;
             }
+            col = nodeCol;
 
             int sum = 0;
             for (int i = col; i < box.Column; i++)
@@ -191,6 +202,7 @@ namespace AI
 
             int target = 0;
             bool flag = false;
+            var nodeRow = 0;
             for (int i = row; ; i--)
             {
                 if (box.Data[i, col] is int number && flag)
@@ -203,7 +215,9 @@ namespace AI
                     break;
                 }
                 flag = true;
+                nodeRow = i;
             }
+            row = nodeRow;
 
             int sum = 0;
             for (int i = row; i < box.Row; i++)

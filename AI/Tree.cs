@@ -28,6 +28,8 @@ namespace AI
                 array[row, col] = i;
                 newBox.Data = (object[,])array.Clone();
                 node.Data = newBox;
+                node.StatNewRow = row;
+                node.StatNewColumn = col;
                 parent.Children.Add(node);
             }
             return parent;
@@ -46,6 +48,10 @@ namespace AI
         public List<TreeNode> Children { get; set; }
 
         public Box Data { get; set; }
+
+        public int StatNewRow { get; set; }
+
+        public int StatNewColumn { get; set; }
 
     }
 }

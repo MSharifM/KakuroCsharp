@@ -29,30 +29,18 @@ namespace AI
         private void InitializeComponent()
         {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnInputFile = new System.Windows.Forms.Button();
             this.webBQuestion = new System.Windows.Forms.WebBrowser();
             this.webBSolve = new System.Windows.Forms.WebBrowser();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnBackTrackFC = new System.Windows.Forms.Button();
+            this.btnBackTrack = new System.Windows.Forms.Button();
+            this.btnMinConflict = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // btnInputFile
-            // 
-            this.btnInputFile.BackColor = System.Drawing.Color.Lime;
-            this.btnInputFile.Font = new System.Drawing.Font("Nazanin", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnInputFile.ForeColor = System.Drawing.Color.Black;
-            this.btnInputFile.Location = new System.Drawing.Point(216, 18);
-            this.btnInputFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnInputFile.Name = "btnInputFile";
-            this.btnInputFile.Size = new System.Drawing.Size(100, 35);
-            this.btnInputFile.TabIndex = 0;
-            this.btnInputFile.Text = "انتخاب فایل";
-            this.btnInputFile.UseVisualStyleBackColor = false;
-            this.btnInputFile.Click += new System.EventHandler(this.btnInputFile_Click);
             // 
             // webBQuestion
             // 
@@ -90,16 +78,59 @@ namespace AI
             this.label2.TabIndex = 4;
             this.label2.Text = "پاسخ";
             // 
+            // btnBackTrackFC
+            // 
+            this.btnBackTrackFC.BackColor = System.Drawing.Color.Aqua;
+            this.btnBackTrackFC.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnBackTrackFC.ForeColor = System.Drawing.Color.Black;
+            this.btnBackTrackFC.Location = new System.Drawing.Point(13, 18);
+            this.btnBackTrackFC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBackTrackFC.Name = "btnBackTrackFC";
+            this.btnBackTrackFC.Size = new System.Drawing.Size(102, 35);
+            this.btnBackTrackFC.TabIndex = 5;
+            this.btnBackTrackFC.Text = "BackTrack - FC";
+            this.btnBackTrackFC.UseVisualStyleBackColor = false;
+            // 
+            // btnBackTrack
+            // 
+            this.btnBackTrack.BackColor = System.Drawing.Color.Aqua;
+            this.btnBackTrack.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnBackTrack.ForeColor = System.Drawing.Color.Black;
+            this.btnBackTrack.Location = new System.Drawing.Point(211, 18);
+            this.btnBackTrack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBackTrack.Name = "btnBackTrack";
+            this.btnBackTrack.Size = new System.Drawing.Size(100, 35);
+            this.btnBackTrack.TabIndex = 6;
+            this.btnBackTrack.Text = "BackTrack";
+            this.btnBackTrack.UseVisualStyleBackColor = false;
+            this.btnBackTrack.Click += new System.EventHandler(this.btnBackTrack_Click);
+            // 
+            // btnMinConflict
+            // 
+            this.btnMinConflict.BackColor = System.Drawing.Color.Aqua;
+            this.btnMinConflict.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnMinConflict.ForeColor = System.Drawing.Color.Black;
+            this.btnMinConflict.Location = new System.Drawing.Point(419, 18);
+            this.btnMinConflict.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnMinConflict.Name = "btnMinConflict";
+            this.btnMinConflict.Size = new System.Drawing.Size(100, 35);
+            this.btnMinConflict.TabIndex = 7;
+            this.btnMinConflict.Text = "MinConflict";
+            this.btnMinConflict.UseVisualStyleBackColor = false;
+            this.btnMinConflict.Click += new System.EventHandler(this.btnMinConflict_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(532, 378);
+            this.Controls.Add(this.btnMinConflict);
+            this.Controls.Add(this.btnBackTrack);
+            this.Controls.Add(this.btnBackTrackFC);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.webBSolve);
             this.Controls.Add(this.webBQuestion);
-            this.Controls.Add(this.btnInputFile);
             this.Font = new System.Drawing.Font("Nazanin", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
@@ -113,11 +144,13 @@ namespace AI
         #endregion
 
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button btnInputFile;
         private System.Windows.Forms.WebBrowser webBQuestion;
         private System.Windows.Forms.WebBrowser webBSolve;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnBackTrackFC;
+        private System.Windows.Forms.Button btnBackTrack;
+        private System.Windows.Forms.Button btnMinConflict;
     }
 }
 
