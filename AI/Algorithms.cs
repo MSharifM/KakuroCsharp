@@ -10,15 +10,17 @@ namespace AI
 
         private static Box Result { get; set; }
         private static Emptypoints endStat;
+
         public static Box BackTracking(Box oldBox, TreeNode parent = null, bool fc = false)
         {
-            if (parent != null && parent.Data.Data[4, 4] != null && (parent.Data.Data[4, 4].ToString() == 9.ToString()))
+            if (parent != null && parent.Data.Data[endStat.X, endStat.Y] != null)
             {
                 Result = parent.Data;
                 Form1 form1 = new Form1();
                 form1.OutputFile("solve", Result, true);
                 return oldBox;
             }
+
             Box copyBox = new Box(oldBox.Row, oldBox.Column);
             copyBox.Data = (object[,])oldBox.Data.Clone();
             Tree tree = new Tree(copyBox);
@@ -45,14 +47,15 @@ namespace AI
                         }
                         else
                             parent = tree.Insert(parent, copyBox, i, j).Children[0]; // Update parent tree node
+
                         if (parent.Data.IsValidRowAndColumn(parent.StatNewRow, parent.StatNewColumn))
                         {
-                            var res = BackTracking(parent.Data, parent , fc);
+                            var res = BackTracking(parent.Data, parent, fc);
                             return Result;
                         }
                         else
                         {
-                            var res = Back(parent, i, j , fc); // Backtrack on first child
+                            var res = Back(parent, i, j, fc); // Backtrack on first child
                             return Result;
                         }
                     }
@@ -61,23 +64,19 @@ namespace AI
             return Result;
         }
 
-        public static Box Back(TreeNode node, int i, int j , bool fc = false)
+        private static Box Back(TreeNode node, int i, int j, bool fc = false)
         {
             node = node.Parent;
-            if (node.Children.Count() == 0)
-            {
-                Back(node, node.StatNewRow, node.StatNewColumn , fc);
-            }
             node.Children.RemoveAt(0); // Remove the first child because failed
             if (node.Children.Count() == 0)
             {
-                Back(node, node.StatNewRow, node.StatNewColumn , fc);
+                Back(node, node.StatNewRow, node.StatNewColumn, fc);
             }
             try
             {
                 if (!node.Children[0].Data.IsValidRowAndColumn(node.Children[0].StatNewRow, node.Children[0].StatNewColumn))
                 {
-                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn , fc);
+                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn, fc);
                     return node.Children[0].Data;
                 }
             }
@@ -85,7 +84,7 @@ namespace AI
             {
                 return null;
             }
-            var res = BackTracking(node.Children[0].Data, node.Children[0] , fc); // backtrack on first child
+            var res = BackTracking(node.Children[0].Data, node.Children[0], fc); // backtrack on first child
             return res;
         }
 
