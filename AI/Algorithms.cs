@@ -10,7 +10,7 @@ namespace AI
 
         private static Box Result { get; set; }
         private static Emptypoints endStat;
-        public static Box BackTracking(Box oldBox, TreeNode parent = null)
+        public static Box BackTracking(Box oldBox, TreeNode parent = null, bool fc = false)
         {
             if (parent != null && parent.Data.Data[4, 4] != null && (parent.Data.Data[4, 4].ToString() == 9.ToString()))
             {
@@ -35,15 +35,24 @@ namespace AI
                 {
                     if (copyBox.Data[i, j] is null)
                     {
-                        parent = tree.Insert(parent, copyBox, i, j).Children[0]; // Update parent tree node
+                        if (fc)
+                        {
+                            var domain = Domain(copyBox, i, j);
+                            if (domain is null)
+                                Back(parent, i, j, fc);
+
+                            parent = tree.Insert(parent, copyBox, i, j, domain).Children[0];
+                        }
+                        else
+                            parent = tree.Insert(parent, copyBox, i, j).Children[0]; // Update parent tree node
                         if (parent.Data.IsValidRowAndColumn(parent.StatNewRow, parent.StatNewColumn))
                         {
-                            var res = BackTracking(parent.Data, parent);
+                            var res = BackTracking(parent.Data, parent , fc);
                             return Result;
                         }
                         else
                         {
-                            var res = Back(parent, i, j); // Backtrack on first child
+                            var res = Back(parent, i, j , fc); // Backtrack on first child
                             return Result;
                         }
                     }
@@ -52,23 +61,23 @@ namespace AI
             return Result;
         }
 
-        public static Box Back(TreeNode node, int i, int j)
+        public static Box Back(TreeNode node, int i, int j , bool fc = false)
         {
             node = node.Parent;
             if (node.Children.Count() == 0)
             {
-                Back(node, node.StatNewRow, node.StatNewColumn);
+                Back(node, node.StatNewRow, node.StatNewColumn , fc);
             }
             node.Children.RemoveAt(0); // Remove the first child because failed
             if (node.Children.Count() == 0)
             {
-                Back(node, node.StatNewRow, node.StatNewColumn);
+                Back(node, node.StatNewRow, node.StatNewColumn , fc);
             }
             try
             {
                 if (!node.Children[0].Data.IsValidRowAndColumn(node.Children[0].StatNewRow, node.Children[0].StatNewColumn))
                 {
-                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn);
+                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn , fc);
                     return node.Children[0].Data;
                 }
             }
@@ -76,8 +85,37 @@ namespace AI
             {
                 return null;
             }
-            var res = BackTracking(node.Children[0].Data, node.Children[0]); // backtrack on first child
+            var res = BackTracking(node.Children[0].Data, node.Children[0] , fc); // backtrack on first child
             return res;
+        }
+
+        private static List<int> Domain(Box box, int row, int col)
+        {
+            List<int> domain = Enumerable.Range(1, 9).ToList();
+            for (int i = row; i >= 0; i--)
+            {
+                if (box.Data[i, col] is Node)
+                    break;
+
+                if (box.Data[i, col] is int number)
+                    if (number == -1)
+                        break;
+                    else
+                        domain.Remove(number);
+            }
+            for (int i = col; i >= 0; i--)
+            {
+                if (box.Data[i, col] is Node)
+                    break;
+
+                if (box.Data[row, i] is int number)
+                    if (number == -1)
+                        break;
+                    else
+                        domain.Remove(number);
+            }
+
+            return domain;
         }
 
         #endregion

@@ -90,6 +90,7 @@ namespace AI
             this.btnBackTrackFC.TabIndex = 5;
             this.btnBackTrackFC.Text = "BackTrack - FC";
             this.btnBackTrackFC.UseVisualStyleBackColor = false;
+            this.btnBackTrackFC.Click += new System.EventHandler(this.btnBackTrackFC_Click);
             // 
             // btnBackTrack
             // 

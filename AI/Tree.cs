@@ -17,15 +17,18 @@ namespace AI
 
         public TreeNode Root { get; set; }
 
-        public TreeNode Insert(TreeNode parent, Box oldBox, int row, int col)
+        public TreeNode Insert(TreeNode parent, Box oldBox, int row, int col , List<int> domain = null)
         {
-            for (int i = 1; i < 10; i++)
+            if(domain is null)
+                domain = Enumerable.Range(1, 9).ToList();
+
+            foreach(var index in domain)
             {
                 TreeNode node = new TreeNode();
                 node.Parent = parent;
                 Box newBox = new Box(oldBox.Row, oldBox.Column);
                 var array = (object[,])oldBox.Data.Clone();
-                array[row, col] = i;
+                array[row, col] = index;
                 newBox.Data = (object[,])array.Clone();
                 node.Data = newBox;
                 node.StatNewRow = row;

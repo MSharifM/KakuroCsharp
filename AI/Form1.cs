@@ -130,6 +130,13 @@ namespace AI
             Algorithms.MinConflict(Box);
             OutputFile("solve", Box, true);
         }
+
+        private void btnBackTrackFC_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+            Box = Algorithms.BackTracking(Box, null, true);
+            OutputFile("solve", Box, true);
+        }
     }
 
     public class Box
