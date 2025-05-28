@@ -36,6 +36,7 @@ namespace AI
             this.btnBackTrackFC = new System.Windows.Forms.Button();
             this.btnBackTrack = new System.Windows.Forms.Button();
             this.btnMinConflict = new System.Windows.Forms.Button();
+            this.btnBackTrackMRV = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -57,6 +58,7 @@ namespace AI
             this.webBSolve.Name = "webBSolve";
             this.webBSolve.Size = new System.Drawing.Size(250, 232);
             this.webBSolve.TabIndex = 2;
+            this.webBSolve.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBSolve_DocumentCompleted);
             // 
             // label1
             // 
@@ -83,10 +85,10 @@ namespace AI
             this.btnBackTrackFC.BackColor = System.Drawing.Color.Aqua;
             this.btnBackTrackFC.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.btnBackTrackFC.ForeColor = System.Drawing.Color.Black;
-            this.btnBackTrackFC.Location = new System.Drawing.Point(13, 18);
+            this.btnBackTrackFC.Location = new System.Drawing.Point(140, 18);
             this.btnBackTrackFC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnBackTrackFC.Name = "btnBackTrackFC";
-            this.btnBackTrackFC.Size = new System.Drawing.Size(102, 35);
+            this.btnBackTrackFC.Size = new System.Drawing.Size(122, 35);
             this.btnBackTrackFC.TabIndex = 5;
             this.btnBackTrackFC.Text = "BackTrack - FC";
             this.btnBackTrackFC.UseVisualStyleBackColor = false;
@@ -97,10 +99,10 @@ namespace AI
             this.btnBackTrack.BackColor = System.Drawing.Color.Aqua;
             this.btnBackTrack.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.btnBackTrack.ForeColor = System.Drawing.Color.Black;
-            this.btnBackTrack.Location = new System.Drawing.Point(211, 18);
+            this.btnBackTrack.Location = new System.Drawing.Point(270, 18);
             this.btnBackTrack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnBackTrack.Name = "btnBackTrack";
-            this.btnBackTrack.Size = new System.Drawing.Size(100, 35);
+            this.btnBackTrack.Size = new System.Drawing.Size(122, 35);
             this.btnBackTrack.TabIndex = 6;
             this.btnBackTrack.Text = "BackTrack";
             this.btnBackTrack.UseVisualStyleBackColor = false;
@@ -111,20 +113,35 @@ namespace AI
             this.btnMinConflict.BackColor = System.Drawing.Color.Aqua;
             this.btnMinConflict.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.btnMinConflict.ForeColor = System.Drawing.Color.Black;
-            this.btnMinConflict.Location = new System.Drawing.Point(419, 18);
+            this.btnMinConflict.Location = new System.Drawing.Point(400, 18);
             this.btnMinConflict.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMinConflict.Name = "btnMinConflict";
-            this.btnMinConflict.Size = new System.Drawing.Size(100, 35);
+            this.btnMinConflict.Size = new System.Drawing.Size(122, 35);
             this.btnMinConflict.TabIndex = 7;
             this.btnMinConflict.Text = "MinConflict";
             this.btnMinConflict.UseVisualStyleBackColor = false;
             this.btnMinConflict.Click += new System.EventHandler(this.btnMinConflict_Click);
+            // 
+            // btnBackTrackMRV
+            // 
+            this.btnBackTrackMRV.BackColor = System.Drawing.Color.Aqua;
+            this.btnBackTrackMRV.Font = new System.Drawing.Font("Nazanin", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnBackTrackMRV.ForeColor = System.Drawing.Color.Black;
+            this.btnBackTrackMRV.Location = new System.Drawing.Point(10, 18);
+            this.btnBackTrackMRV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBackTrackMRV.Name = "btnBackTrackMRV";
+            this.btnBackTrackMRV.Size = new System.Drawing.Size(124, 35);
+            this.btnBackTrackMRV.TabIndex = 8;
+            this.btnBackTrackMRV.Text = "BackTrack-FC-MRV";
+            this.btnBackTrackMRV.UseVisualStyleBackColor = false;
+            this.btnBackTrackMRV.Click += new System.EventHandler(this.btnBackTrackMRV_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(532, 378);
+            this.Controls.Add(this.btnBackTrackMRV);
             this.Controls.Add(this.btnMinConflict);
             this.Controls.Add(this.btnBackTrack);
             this.Controls.Add(this.btnBackTrackFC);
@@ -152,6 +169,7 @@ namespace AI
         private System.Windows.Forms.Button btnBackTrackFC;
         private System.Windows.Forms.Button btnBackTrack;
         private System.Windows.Forms.Button btnMinConflict;
+        private System.Windows.Forms.Button btnBackTrackMRV;
     }
 }
 

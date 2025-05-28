@@ -137,6 +137,19 @@ namespace AI
             Box = Algorithms.BackTracking(Box, null, true);
             OutputFile("solve", Box, true);
         }
+
+        private void btnBackTrackMRV_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+            Box = Algorithms.BackTracking(Box, null, false , true);
+            OutputFile("solve", Box, true);
+            //TODO MRV
+        }
+
+        private void webBSolve_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
     }
 
     public class Box

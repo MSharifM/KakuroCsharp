@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace AI
 {
@@ -11,13 +12,11 @@ namespace AI
         private static Box Result { get; set; }
         private static Emptypoints endStat;
 
-        public static Box BackTracking(Box oldBox, TreeNode parent = null, bool fc = false)
+        public static Box BackTracking(Box oldBox, TreeNode treeNode = null, bool fc = false, bool mrv = false)
         {
-            if (parent != null && parent.Data.Data[endStat.X, endStat.Y] != null)
+            if (treeNode != null && treeNode.Data.Data[endStat.X, endStat.Y] != null && !mrv)
             {
-                Result = parent.Data;
-                Form1 form1 = new Form1();
-                form1.OutputFile("solve", Result, true);
+                Result = treeNode.Data;
                 return oldBox;
             }
 
@@ -25,58 +24,79 @@ namespace AI
             copyBox.Data = (object[,])oldBox.Data.Clone();
             Tree tree = new Tree(copyBox);
 
-            if (parent == null)
+            if (treeNode == null)
             {
-                parent = tree.Root;
+                treeNode = tree.Root;
                 endStat = Emptypoints.StatEndEmpity(oldBox);
             }
 
+            bool full = true;
             for (int i = 0; i < copyBox.Row; i++)
             {
                 for (int j = 0; j < copyBox.Column; j++)
                 {
                     if (copyBox.Data[i, j] is null)
                     {
+                        full = false;
                         if (fc)
                         {
                             var domain = Domain(copyBox, i, j);
                             if (domain is null)
-                                Back(parent, i, j, fc);
+                                Back(treeNode, i, j, fc, mrv);
 
-                            parent = tree.Insert(parent, copyBox, i, j, domain).Children[0];
+                            treeNode = tree.Insert(treeNode, copyBox, i, j, domain).Children[0];
+                        }
+                        else if (mrv)
+                        {
+                            var blockStat = SearchMRV(copyBox);
+                            if (blockStat.Item1 is null)
+                                break;
+
+                            if (blockStat.Item2.Item2 == 0 &&  blockStat.Item2.Item1 == 0)
+                            {
+
+                            }
+                            treeNode = tree.Insert(treeNode, copyBox,
+                                blockStat.Item2.Item1, blockStat.Item2.Item2, blockStat.Item1).Children[0];
                         }
                         else
-                            parent = tree.Insert(parent, copyBox, i, j).Children[0]; // Update parent tree node
-
-                        if (parent.Data.IsValidRowAndColumn(parent.StatNewRow, parent.StatNewColumn))
                         {
-                            var res = BackTracking(parent.Data, parent, fc);
+                            treeNode = tree.Insert(treeNode, copyBox, i, j).Children[0]; // Update parent tree node
+                        }
+                        if (treeNode.Data.IsValidRowAndColumn(treeNode.StatNewRow, treeNode.StatNewColumn))
+                        {
+                            var res = BackTracking(treeNode.Data, treeNode, fc, mrv);
                             return Result;
                         }
                         else
                         {
-                            var res = Back(parent, i, j, fc); // Backtrack on first child
+                            var res = Back(treeNode, i, j, fc, mrv); // Backtrack on first child
                             return Result;
                         }
                     }
                 }
             }
+            if (full)
+            {
+                Result = treeNode.Data;
+                return oldBox;
+            }
             return Result;
         }
 
-        private static Box Back(TreeNode node, int i, int j, bool fc = false)
+        private static Box Back(TreeNode node, int i, int j, bool fc = false, bool mrv = false)
         {
             node = node.Parent;
             node.Children.RemoveAt(0); // Remove the first child because failed
             if (node.Children.Count() == 0)
             {
-                Back(node, node.StatNewRow, node.StatNewColumn, fc);
+                Back(node, node.StatNewRow, node.StatNewColumn, fc, mrv);
             }
             try
             {
                 if (!node.Children[0].Data.IsValidRowAndColumn(node.Children[0].StatNewRow, node.Children[0].StatNewColumn))
                 {
-                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn, fc);
+                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn, fc, mrv);
                     return node.Children[0].Data;
                 }
             }
@@ -84,13 +104,14 @@ namespace AI
             {
                 return null;
             }
-            var res = BackTracking(node.Children[0].Data, node.Children[0], fc); // backtrack on first child
+            var res = BackTracking(node.Children[0].Data, node.Children[0], fc, mrv); // backtrack on first child
             return res;
         }
 
         private static List<int> Domain(Box box, int row, int col)
         {
             List<int> domain = Enumerable.Range(1, 9).ToList();
+            // search left
             for (int i = row; i >= 0; i--)
             {
                 if (box.Data[i, col] is Node)
@@ -102,6 +123,31 @@ namespace AI
                     else
                         domain.Remove(number);
             }
+            //down
+            for (int i = row; i < box.Row; i++)
+            {
+                if (box.Data[i, col] is Node)
+                    break;
+
+                if (box.Data[i, col] is int number)
+                    if (number == -1)
+                        break;
+                    else
+                        domain.Remove(number);
+            }
+            //right
+            for (int i = col; i < box.Column; i++)
+            {
+                if (box.Data[row, i] is Node)
+                    break;
+
+                if (box.Data[row, i] is int number)
+                    if (number == -1)
+                        break;
+                    else
+                        domain.Remove(number);
+            }
+            // search up
             for (int i = col; i >= 0; i--)
             {
                 if (box.Data[i, col] is Node)
@@ -115,6 +161,32 @@ namespace AI
             }
 
             return domain;
+        }
+
+        private static Tuple<List<int>, Tuple<int, int>> SearchMRV(Box box)
+        {
+            int row = 0, col = 0;
+            List<int> domain = new List<int>();
+            for (int i = 0; i < box.Row; i++)
+            {
+                for (int j = 0; j < box.Column; j++)
+                {
+                    if (box.Data[i, j] is null)
+                    {
+                        var temp = Domain(box, i, j);
+                        if (domain.Count() <= temp.Count())
+                        {
+                            domain = temp;
+                            row = i;
+                            col = j;
+                        }
+                    }
+                }
+            }
+            if (row == 0 && col == 0)
+                return null;
+
+            return Tuple.Create(domain, Tuple.Create(row, col));
         }
 
         #endregion
