@@ -246,17 +246,13 @@ namespace AI
 
         private static List<int> GetPossibleValues(int row, int col)
         {
-            return Enumerable.Range(1, 9)
-                .OrderBy(x => _random.Next()) // برای جلوگیری از ترتیب ثابت
-                .ToList();
+            return Enumerable.Range(1, 9).OrderBy(x => _random.Next()).ToList();
         }
 
         private static void InitializeRandomValues()
         {
             foreach (var (i, j) in variables)
-            {
                 ResultMinConflict.Data[i, j] = _random.Next(1, 10);
-            }
         }
     }
 
