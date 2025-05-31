@@ -193,37 +193,26 @@ namespace AI
 
         #region MinConflict
 
-        private static List<Tuple<int, int>> variables = new List<Tuple<int, int>>();
+        private static List<Tuple<int, int>> _empityBlocks = new List<Tuple<int, int>>();
         private static Random _random = new Random();
         public static Box ResultMinConflict { get; set; }
-
-        private static void InitializeVariables()
-        {
-            for (int i = 0; i < ResultMinConflict.Row; i++)
-                for (int j = 0; j < ResultMinConflict.Column; j++)
-                    if (ResultMinConflict.Data[i, j] is null)
-                        variables.Add(Tuple.Create(i, j));
-        }
 
         public static void MinConflict(Box box, int maxSteps = 10000)
         {
             ResultMinConflict = box;
-            InitializeVariables();
-
+            FindEmpityBlocks();
             InitializeRandomValues();
 
             for (int step = 0; step < maxSteps; step++)
             {
-                var conflicts = variables.Where(v => !ResultMinConflict.IsValidRowAndColumn(v.Item1, v.Item2)).ToList();
+                var conflicts = _empityBlocks.Where(v => !ResultMinConflict.IsValidRowAndColumn(v.Item1, v.Item2)).ToList();
 
                 if (conflicts.Count == 0)
-                {
                     return;
-                }
 
-                var randomVar = conflicts[_random.Next(conflicts.Count)];
-                var (row, col) = randomVar;
-
+                var randomVar = conflicts[_random.Next(conflicts.Count)]; // select a block conflict 
+                var row = randomVar.Item1;
+                var col = randomVar.Item2;
                 int currentValue = (int)ResultMinConflict.Data[row, col];
                 int bestValue = currentValue;
                 int minConflicts = int.MaxValue;
@@ -231,7 +220,7 @@ namespace AI
                 foreach (int value in GetPossibleValues(row, col))
                 {
                     ResultMinConflict.Data[row, col] = value;
-                    int newConflicts = variables.Count(v => !ResultMinConflict.IsValidRowAndColumn(v.Item1, v.Item2));
+                    int newConflicts = _empityBlocks.Count(v => !ResultMinConflict.IsValidRowAndColumn(v.Item1, v.Item2));
 
                     if (newConflicts < minConflicts)
                     {
@@ -244,14 +233,22 @@ namespace AI
             }
         }
 
+        private static void FindEmpityBlocks()
+        {
+            for (int i = 0; i < ResultMinConflict.Row; i++)
+                for (int j = 0; j < ResultMinConflict.Column; j++)
+                    if (ResultMinConflict.Data[i, j] is null)
+                        _empityBlocks.Add(Tuple.Create(i, j));
+        }
+
         private static List<int> GetPossibleValues(int row, int col)
         {
-            return Enumerable.Range(1, 9).OrderBy(x => _random.Next()).ToList();
+            return Enumerable.Range(1, 9).OrderBy(x => _random.Next()).ToList(); // return a random list betwwen 1-9
         }
 
         private static void InitializeRandomValues()
         {
-            foreach (var (i, j) in variables)
+            foreach (var (i, j) in _empityBlocks)
                 ResultMinConflict.Data[i, j] = _random.Next(1, 10);
         }
     }

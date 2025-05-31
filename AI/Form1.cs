@@ -113,8 +113,6 @@ namespace AI
             pictureBox1.Visible = true;
         }
 
-        #endregion 
-
         private string OpenFile()
         {
             string pathFile = "";
@@ -130,6 +128,8 @@ namespace AI
 
             return null;
         }
+
+        #endregion 
 
         #region Button Algorithms
 
