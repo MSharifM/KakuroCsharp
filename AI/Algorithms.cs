@@ -9,26 +9,14 @@ namespace AI
     {
         #region BT
 
-        private static Box Result { get; set; }
-        private static Emptypoints endStat;
-
         public static Box BackTracking(Box oldBox, TreeNode treeNode = null, bool fc = false, bool mrv = false)
         {
-            if (treeNode != null && treeNode.Data.Data[endStat.X, endStat.Y] != null && !mrv)
-            {
-                Result = treeNode.Data;
-                return oldBox;
-            }
-
             Box copyBox = new Box(oldBox.Row, oldBox.Column);
             copyBox.Data = (object[,])oldBox.Data.Clone();
             Tree tree = new Tree(copyBox);
 
             if (treeNode == null)
-            {
                 treeNode = tree.Root;
-                endStat = Emptypoints.StatEndEmpity(oldBox);
-            }
 
             bool full = true;
             for (int i = 0; i < copyBox.Row; i++)
@@ -38,74 +26,62 @@ namespace AI
                     if (copyBox.Data[i, j] is null)
                     {
                         full = false;
-                        if (fc)
+                        if (fc) // BackTrack with FC
                         {
                             var domain = Domain(copyBox, i, j);
                             if (domain is null)
-                                Back(treeNode, i, j, fc, mrv);
+                            {
+                                treeNode = Back(treeNode, i, j, fc, mrv);
+                                copyBox = treeNode.Data;
+                            }
 
                             treeNode = tree.Insert(treeNode, copyBox, i, j, domain).Children[0];
                         }
-                        else if (mrv)
+                        else if (mrv) // BackTrack with MRV
                         {
                             var blockStat = SearchMRV(copyBox);
                             if (blockStat.Item1 is null)
                                 break;
 
-                            if (blockStat.Item2.Item2 == 0 &&  blockStat.Item2.Item1 == 0)
-                            {
-
-                            }
                             treeNode = tree.Insert(treeNode, copyBox,
                                 blockStat.Item2.Item1, blockStat.Item2.Item2, blockStat.Item1).Children[0];
                         }
-                        else
+                        else // BackTrack without FC & MRV
                         {
                             treeNode = tree.Insert(treeNode, copyBox, i, j).Children[0]; // Update parent tree node
                         }
+
                         if (treeNode.Data.IsValidRowAndColumn(treeNode.StatNewRow, treeNode.StatNewColumn))
                         {
-                            var res = BackTracking(treeNode.Data, treeNode, fc, mrv);
-                            return Result;
+                            copyBox = BackTracking(treeNode.Data, treeNode, fc, mrv);
                         }
                         else
                         {
-                            var res = Back(treeNode, i, j, fc, mrv); // Backtrack on first child
-                            return Result;
+                            treeNode = Back(treeNode, i, j, fc, mrv); // Backtrack on first child
+                            copyBox = treeNode.Data;
                         }
                     }
                 }
             }
-            if (full)
-            {
-                Result = treeNode.Data;
-                return oldBox;
-            }
-            return Result;
+
+            if (mrv && !CheckFull(copyBox))
+                copyBox = BackTracking(copyBox, treeNode, fc, mrv);
+
+            return copyBox;
         }
 
-        private static Box Back(TreeNode node, int i, int j, bool fc = false, bool mrv = false)
+        private static TreeNode Back(TreeNode node, int i, int j, bool fc = false, bool mrv = false)
         {
             node = node.Parent;
             node.Children.RemoveAt(0); // Remove the first child because failed
-            if (node.Children.Count() == 0)
-            {
-                Back(node, node.StatNewRow, node.StatNewColumn, fc, mrv);
-            }
-            try
-            {
-                if (!node.Children[0].Data.IsValidRowAndColumn(node.Children[0].StatNewRow, node.Children[0].StatNewColumn))
-                {
-                    Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn, fc, mrv);
-                    return node.Children[0].Data;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-            var res = BackTracking(node.Children[0].Data, node.Children[0], fc, mrv); // backtrack on first child
-            return res;
+            
+            if (node.Children.Count == 0)
+                return Back(node, node.StatNewRow, node.StatNewColumn, fc, mrv);
+            
+            if (!node.Children[0].Data.IsValidRowAndColumn(node.Children[0].StatNewRow, node.Children[0].StatNewColumn))
+                return Back(node.Children[0], node.Children[0].StatNewRow, node.Children[0].StatNewColumn, fc, mrv);
+
+            return node.Children[0];
         }
 
         private static List<int> Domain(Box box, int row, int col)
@@ -189,6 +165,16 @@ namespace AI
             return Tuple.Create(domain, Tuple.Create(row, col));
         }
 
+        private static bool CheckFull(Box box)
+        {
+            for (int i = 0; i < box.Row; i++)
+            for (int j = 0; j < box.Column; j++)
+                if (box.Data[i, j] is null)
+                    return false;
+
+            return true;
+        }
+
         #endregion
 
         #region MinConflict
@@ -254,31 +240,4 @@ namespace AI
     }
 
     #endregion
-
-
-    public class Emptypoints
-    {
-        public static List<Emptypoints> emptypoints = new List<Emptypoints>();
-
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Emptypoints(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public static Emptypoints StatEndEmpity(Box Box)
-        {
-            for (int i = 0; i < Box.Row; i++)
-            {
-                for (int j = 0; j < Box.Column; j++)
-                {
-                    if (Box.Data[i, j] is null)
-                        emptypoints.Add(new Emptypoints(i, j));
-                }
-            }
-            return emptypoints[emptypoints.Count() - 1];
-        }
-    }
 }
